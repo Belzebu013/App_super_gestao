@@ -6,8 +6,10 @@
     @endif
     <br>
     <input type="text" placeholder="Telefone" class="{{$classe}}" name="telefone" value="{{old('telefone')}}">
+    {{$errors->has('telefone') ? $errors->first('telefone') : ''}}
     <br>
     <input type="text" placeholder="E-mail" class="{{$classe}}" name="email" value="{{old('email')}}">
+     {{$errors->has('email') ? $errors->first('email') : ''}}
     <br>
     <select class="{{$classe}}" name="motivo_contatos_id">
         <option value="">Qual o motivo do contato?</option>
@@ -17,13 +19,16 @@
         @endforeach
 
     </select>
+    {{$errors->has('motivo_contatos_id') ? $errors->first('motivo_contatos_id') : ''}}
     <br>
     <textarea class="{{$classe}}"  name="mensagem">{{(old('mensagem')!= '') ? old('mensagem') : 'Preencha aqui a sua mensagem'}}
     </textarea>
+    {{$errors->has('mensagem') ? $errors->first('mensagem') : ''}}
     <br>
     <button type="submit" class="{{$classe}}">ENVIAR</button>
 </form>
 
+<!-- Tratamento de erros
 @if($errors->any())
 <div style="position: absolute; top: 0px; left:0px; width:100%; background: #ff0000">
     @foreach($errors->all() as $erro)
@@ -32,4 +37,4 @@
     @endforeach
 </div>
 @endif
-
+-->
