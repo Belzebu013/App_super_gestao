@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MotivoContato extends Model
+class LogAcesso extends Model
 {
-    protected $fillable = ['motivo_contato'];
-    use HasFactory;
-}
+    protected $fillable = ['log'];
     
+    use HasFactory;
+
+}

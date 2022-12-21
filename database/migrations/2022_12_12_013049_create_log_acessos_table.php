@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('fornecedores', function (Blueprint $table) {
-            $table->string('uf',2);
-            $table->string('email', 150);
-            $table->string('site', 100);
+        Schema::create('log_acessos', function (Blueprint $table) {
+            $table->id();
+            $table->string('log', 200);
+            $table->timestamps();
         });
     }
 
@@ -27,10 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('fornecedores', function (Blueprint $table) {
-           //$table->dropColumn('uf');
-            //$table->dropColumn('email');
-           $table->dropColumn(['uf', 'email']);
-        });
+        Schema::dropIfExists('log_acessos');
     }
 };

@@ -13,30 +13,49 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\PrincipalController::Class,'principal'])->name('site.index');
-
-Route::get('/sobre-nos', [\App\Http\Controllers\SobreNosController::Class,'sobreNos'])->name('site.sobrenos');
+Route::get('/', [\App\Http\Controllers\PrincipalController::Class,'principal'])
+    ->middleware('log.acesso')
+    ->name('site.index');
+    
+Route::get('/sobre-nos', [\App\Http\Controllers\SobreNosController::Class,'sobreNos'])
+    ->name('site.sobrenos');
 
 Route::get('/contato', [\App\Http\Controllers\ContatoController::Class,'contato'])->name('site.contato');
 
 Route::post('/contato', [\App\Http\Controllers\ContatoController::Class,'salvar'])->name('site.contato');
 
-Route::get('/login', function(){
-    return 'Login';
-})->name('site.login');
+Route::get('/login/{erro?}', [\App\Http\Controllers\LoginController::class, 'index'])
+    ->name('site.login');
 
-Route::prefix('/app')->group(function(){
+    Route::post('/login', [\App\Http\Controllers\LoginController::class, 'autenticar'])
+    ->name('site.login');
 
-    Route::get('/clientes', function(){
-        return 'Clientes'; 
-    })->name('app.clientes');
+Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(function(){
+
+    Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('app.home');
+
+    Route::get('/sair', [\App\Http\Controllers\LoginController::class, 'sair'])->name('app.sair');
+
+    Route::get('/cliente', [\App\Http\Controllers\ClienteController::class, 'index'])->name('app.cliente');
     
-    Route::get('/fornecedores', [App\Http\Controllers\FornecedorController::Class, 'index'])->name('app.fornecedores');
-    
-    Route::get('/produtos', function(){
-        return 'Produtos';
-    })->name('app.produtos');
+    Route::get('/fornecedor', [App\Http\Controllers\FornecedorController::Class, 'index'])->name('app.fornecedor');
 
+    Route::post('/fornecedor/listar', [App\Http\Controllers\FornecedorController::Class, 'listar'])->name('app.fornecedor.listar');
+
+    Route::get('/fornecedor/adicionar', [App\Http\Controllers\FornecedorController::Class, 'adicionar'])->name('app.fornecedor.adicionar');
+
+    Route::post('/fornecedor/adicionar', [App\Http\Controllers\FornecedorController::Class, 'adicionar'])->name('app.fornecedor.adicionar');
+
+    Route::get('/fornecedor/editar/{id}/{msg?}', [App\Http\Controllers\FornecedorController::Class, 'editar'])->name('app.fornecedor.editar');
+
+    Route::get('/fornecedor/excluir/{id}', [App\Http\Controllers\FornecedorController::Class, 'excluir'])->name('app.fornecedor.excluir');
+
+    //produto
+    Route::resource('/produto', App\Http\Controllers\ProdutoController::class);
+
+    //Produto Detalhes
+    Route::resource('/produto-detalhe', App\Http\Controllers\ProdutoDetalheController::class);
+    
 });
 
 Route::get('/teste/{p1}/{p2}',[\App\Http\Controllers\TesteController::Class,'teste'])->name('teste');
