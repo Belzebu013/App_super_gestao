@@ -13,4 +13,8 @@ class Fornecedor extends Model
     protected $fillable = ['nome', 'uf', 'email', 'site'];
     use HasFactory;
 
+    public function produtos(){
+        return $this->hasMany('App\Models\Item', 'fornecedor_id', 'id');
+    }
+
 }
